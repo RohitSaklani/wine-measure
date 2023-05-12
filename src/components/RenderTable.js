@@ -47,7 +47,9 @@ export default function RenderTable({ property }) {
         <tr>
           <th>{`${property} Mode`}</th>
           {stats?.mode
-            ? Object.keys(stats?.mode).map((ele) => <td>{stats?.mode[ele]}</td>)
+            ? Object.keys(stats?.mode).map((ele) => (
+                <td>{(stats?.mode[ele]).map((ele) => `${ele}, `)}</td>
+              ))
             : null}
         </tr>
       </tbody>

@@ -12,7 +12,7 @@ export function calculateGamma(data) {
   let temp = data.map((ele) => {
     return {
       ...ele,
-      Gamma: Number.parseInt((ele.Ash * ele.Hue) / ele.Magnesium).toFixed(2),
+      Gamma: Number.parseFloat((ele.Ash * ele.Hue) / ele.Magnesium).toFixed(2),
     };
   });
   return temp;
@@ -29,7 +29,7 @@ export function getMean(dataSet, res = {}, property = "Flavanoids") {
           sum:
             (acc?.mean?.[ele.Alcohol]?.sum
               ? acc?.mean?.[ele.Alcohol]?.sum
-              : 0) + Number.parseInt(ele[property]),
+              : 0) + Number.parseFloat(ele[property]),
           c: (acc?.mean?.[ele.Alcohol]?.c ? acc?.mean?.[ele.Alcohol].c : 0) + 1,
         },
       },
@@ -61,7 +61,7 @@ export function getMedian(dataSet, res = {}, property = "Flavanoids") {
       ...acc,
       [ele.Alcohol]: [
         ...(acc[ele.Alcohol] ? acc[ele.Alcohol] : []),
-        Number.parseInt(ele?.[property]),
+        Number.parseFloat(ele?.[property]),
       ],
     });
   }, {});
@@ -77,29 +77,64 @@ export function getMedian(dataSet, res = {}, property = "Flavanoids") {
     } else {
       y = temp[x][mid];
     }
-    console.log(y);
+
     temp[x] = y;
   }
   return temp;
 }
 
 //getMode of given dataSet of given property
+// export function getMode(dataSet, res = {}, property = "Flavanoids") {
+//   let temp = {};
+
+//   for (let i = 0; i < dataSet.length; ++i) {
+//     let count = 0;
+//     for (let j = 0; j < dataSet.length; ++j) {
+//       if (dataSet[i][property] === dataSet[j][property]) {
+//         ++count;
+//       }
+//     }
+
+//     temp[dataSet[i].Alcohol] =
+//       temp[dataSet[i].Alcohol] > count
+//         ? temp[dataSet[i].Alcohol]
+//         : Number.parseFloat(dataSet[i][property]).toFixed(3);
+//   }
+
+//   return temp;
+// }
+
 export function getMode(dataSet, res = {}, property = "Flavanoids") {
-  let temp = {};
+  let classes = findClasses(dataSet);
+  let temp1 = {};
+  let temp2 = {};
+  let final = {};
 
-  for (let i = 0; i < dataSet.length; ++i) {
-    let count = 0;
-    for (let j = 0; j < dataSet.length; ++j) {
-      if (dataSet[i] === dataSet[j]) {
-        ++count;
-      }
-    }
+  for (let i = 0; i < classes.length; ++i) {
+    temp1 = dataSet.reduce((acc, ele) => {
+      if (classes[i] === ele.Alcohol)
+        acc = {
+          ...acc,
+          [ele[property]]: (acc[ele[property]] ? acc[ele[property]] : 0) + 1,
+        };
 
-    temp[dataSet[i].Alcohol] =
-      temp[dataSet[i].Alcohol] > count
-        ? temp[dataSet[i].Alcohol]
-        : Number.parseInt(dataSet[i][property]).toFixed(3);
+      return acc;
+    }, {});
+    temp2 = { ...temp2, [classes[i]]: temp1 };
   }
 
-  return temp;
+  for (let x in temp2) {
+    let max = 0;
+    for (let y in temp2[x]) {
+      if (temp2[x][y] > max) {
+        final[x] = [];
+        final[x] = [y];
+        max = temp2[x][y];
+      } else if (temp2[x][y] === max) {
+        final[x] = [...(final[x] ? final[x] : []), y];
+      }
+    }
+  }
+
+  return final;
 }
