@@ -15,4 +15,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ### Preview
 
-![Alt text](public\assets\Screenshot.png?raw=true "Screenshot")
+![preview](public/assets/Screenshot.png?raw=true "Screenshot")
