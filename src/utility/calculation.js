@@ -84,26 +84,6 @@ export function getMedian(dataSet, res = {}, property = "Flavanoids") {
 }
 
 //getMode of given dataSet of given property
-// export function getMode(dataSet, res = {}, property = "Flavanoids") {
-//   let temp = {};
-
-//   for (let i = 0; i < dataSet.length; ++i) {
-//     let count = 0;
-//     for (let j = 0; j < dataSet.length; ++j) {
-//       if (dataSet[i][property] === dataSet[j][property]) {
-//         ++count;
-//       }
-//     }
-
-//     temp[dataSet[i].Alcohol] =
-//       temp[dataSet[i].Alcohol] > count
-//         ? temp[dataSet[i].Alcohol]
-//         : Number.parseFloat(dataSet[i][property]).toFixed(3);
-//   }
-
-//   return temp;
-// }
-
 export function getMode(dataSet, res = {}, property = "Flavanoids") {
   let classes = findClasses(dataSet);
   let temp1 = {};
